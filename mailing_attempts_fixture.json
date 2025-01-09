@@ -1,0 +1,33 @@
+[
+{
+    "model": "mailing.mailingattempts",
+    "pk": 1,
+    "fields": {
+        "attempted_at": "22025-01-21T20:27:29Z",
+        "status": "success",
+        "mail_server_response": "skypro1@skypro.com: Успешно отправлено",
+        "mailing": 1
+    }
+},
+{
+    "model": "mailing.mailingattempt",
+    "pk": 2,
+    "fields": {
+        "attempted_at": "2025-01-21T20:28:17Z",
+        "status": "success",
+        "mail_server_response": "skypro1@skypro.com: Успешно отправлено",
+        "mailing": 1
+    }
+},
+{
+    "model": "mailing.mailingattempt",
+    "pk": 3,
+    "fields": {
+        "attempted_at": "2025-01-26T21:36:17Z",
+        "status": "success",
+        "mail_server_response": "skypro1@skypro.com: Успешно отправлено",
+        "mailing": 1
+    }
+}
+
+]

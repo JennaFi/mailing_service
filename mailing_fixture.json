@@ -1,0 +1,44 @@
+[
+  {
+    "model": "mailing.mailing",
+    "pk": 1,
+    "fields": {
+      "first_send_at": "2025-01-21T20:27:29Z",
+      "finish_send_at": "2025-01-21T20:27:30Z",
+      "status": "created",
+      "message": 1,
+      "recipients": [
+        1,
+        2,
+        3
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 2,
+    "fields": {
+      "first_send_at": "2025-01-21T20:28:17Z",
+      "finish_send_at": "2025-01-21T20:28:18Z",
+      "status": "running",
+      "message": 1,
+      "recipients": [
+        2
+      ]
+    }
+  },
+  {
+    "model": "mailing.mailing",
+    "pk": 4,
+    "fields": {
+      "first_send_at": "2025-01-26T21:36:17Z",
+      "finish_send_at": "2025-01-26T21:36:17Z",
+      "status": "running",
+      "message": 3,
+      "recipients": [
+        1,
+        3
+      ]
+    }
+  }
+]

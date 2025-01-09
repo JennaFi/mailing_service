@@ -48,6 +48,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'mailing',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -147,6 +150,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = 'catalog:product_list'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_URL = 'users:login'
 
 CACHE_ENABLED = True
 if CACHE_ENABLED:
