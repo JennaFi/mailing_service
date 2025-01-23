@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="container">
+
+    <h4>Profile {{ user.email }} update</h4>
+
+    <div class="input-group mb-3">
+        <form class="horizontal" method="post" enctype="multipart/form-data">
+             {% if messages %}
+                    <div class="alert alert-info">
+                        {% for message in messages %}
+                        <p>{{ message }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+            <div class="card-header">
+
+                {% csrf_token %}
+                {{ form|crispy }}
+
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                Edit
+            </button>
+
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

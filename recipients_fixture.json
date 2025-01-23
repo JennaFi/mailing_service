@@ -1,0 +1,29 @@
+[
+  {
+    "model": "mailing.recipient",
+    "pk": 1,
+    "fields": {
+      "email": "skypro1@skypro.com",
+      "name": "Скайпро Скайпрo",
+      "comment": "skypro1@skypro.com.\r\nСкайпро Скайпрo Скайпро.\r\nТест1."
+    }
+  },
+  {
+    "model": "mailing.recipient",
+    "pk": 2,
+    "fields": {
+      "email": "skypro1@skypro.com",
+      "name": "Скайпро Скайпрo",
+      "comment": "skypro1@skypro.com.\r\nСкайпро Скайпрo Скайпро.\r\nТест2."
+    }
+  },
+  {
+    "model": "mailing.recipient",
+    "pk": 3,
+    "fields": {
+      "email": "skypro1@skypro.com",
+      "name": "Скайпро Скайпрo",
+      "comment": "skypro1@skypro.com.\r\nСкайпро Скайпрo Скайпро.\r\nТест3."
+    }
+  }
+]

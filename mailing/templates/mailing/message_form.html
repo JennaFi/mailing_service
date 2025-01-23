@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if message %}
+<h2>Change</h2>
+{% else %}
+<h2>Add</h2>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form|crispy }}
+
+    {% if message %}
+    <button type="submit" class="btn btn-outline-primary">Change</button>
+    {% else %}
+    <button type="submit" class="btn btn-outline-primary">Create</button>
+    {% endif %}
+
+</form>
+
+{% endblock %}

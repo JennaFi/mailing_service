@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if mailing %}
+<h2>Change</h2>
+{% else %}
+<h2>Update</h2>
+{% endif %}
+
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ form|crispy }}
+    {% if perms.mailing.can_disable_mailing %}
+    <div class="col-3">
+        {{ form.is_disabled.label_tag }}
+        {{ form.is_disabled }}
+        <button type="submit" class="btn btn-outline-primary">Disable</button>
+    </div>
+    {% endif %}
+
+    {% if object and user == object.owner %}
+    <button type="submit" class="btn btn-outline-primary">Update</button>
+    {% else %}
+    <button type="submit" class="btn btn-outline-primary">Add</button>
+    {% endif %}
+
+</form>
+
+{% endblock %}
