@@ -1,27 +1,27 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Получатели рассылки{% endblock %}
-
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 
 {% if recipient %}
-<h2>Изменить получателя рассылки</h2>
+<h2>Change</h2>
 {% else %}
-<h2>Добавить получателя рассылки</h2>
+<h2>Add</h2>
 {% endif %}
 
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    {{ form|crispy }}
 
     {% if recipient %}
-    <button type="submit" class="btn btn-outline-primary">Изменить</button>
+    <button type="submit" class="btn btn-outline-primary">Change</button>
     {% else %}
-    <button type="submit" class="btn btn-outline-primary">Добавить</button>
+    <button type="submit" class="btn btn-outline-primary">Add</button>
     {% endif %}
 
 </form>
 
 {% endblock %}
+
+

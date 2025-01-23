@@ -3,7 +3,7 @@ from django import forms
 from mailing.models import Mailing, Recipient, Message
 
 
-class MailingForm(forms.Form):
+class MailingForm(forms.ModelForm):
     class Meta:
         model = Mailing
         fields = '__all__'
@@ -14,8 +14,20 @@ class MailingForm(forms.Form):
             'recipients': forms.CheckboxSelectMultiple(),
         }
 
-class RecipientsForm(forms.Form):
 
+class MailingManagerForm(forms.ModelForm):
+    class Meta:
+        model = Mailing
+        fields = ('is_disabled',)
+        widgets = {
+            'is_disabled': forms.CheckboxInput(),
+        }
+        labels = {
+            'is_disabled': 'Disable mailing',
+        }
+
+
+class RecipientsForm(forms.ModelForm):
     class Meta:
         model = Recipient
         fields = '__all__'
@@ -23,8 +35,8 @@ class RecipientsForm(forms.Form):
             'owner',
         ]
 
-class MessageForm(forms.Form):
 
+class MessageForm(forms.ModelForm):
     class Meta:
         model = Message
         fields = '__all__'

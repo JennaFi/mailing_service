@@ -1,21 +1,26 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Управление рассылками{% endblock %}
-
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2>Подтверждение выполнения рассылки</h2>
+    <h2>Mailing Detail</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <form method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-outline-primary m-1">Подтвердить выполнение
-                рассылки
-            </button>
-        </form>
+        <form class="horizontal" method="post" enctype="multipart/form-data">
+            <div class="card-header">
 
-        <a class="btn btn-outline-primary m-1" href="{% url 'mailing:mailing_update' object.pk%}">Изменить</a>
-        <a class="btn btn-outline-danger m-1" href="{% url 'mailing:mailing_delete' object.pk%}">Удалить</a>
+                {% csrf_token %}
+
+            </div>
+            <button type="submit" class="btn btn-outline-primary m-1">Confirm</button>
+        </form>
+        {% if user == mailing.owner %}
+        <a class="btn btn-outline-primary m-1" href="{% url 'mailing:mailing_update' mailing.pk %}">Update</a>
+        <a class="btn btn-outline-danger m-1" href="{% url 'mailing:mailing_delete' mailing.pk %}">Delete</a>
+        {% endif %}
+        {% if perms.mailing.can_disable_mailing %}
+        <a class="btn btn-outline-secondary m-1" href="{% url 'mailing:mailing_update' mailing.pk %}">Disable</a>
+        {% endif %}
+
     </div>
 </div>
 
@@ -28,7 +33,7 @@
                 <div class="col-12">
                     <div class="card mb-4 box-shadow">
                         <div class="card-body">
-                            <h6 class="card-subtitle mb-2 text-body-secondary">Тема</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Theme</h6>
                             <h5 class="card-title">{{ mailing.message }}</h5>
 
                         </div>
@@ -41,7 +46,7 @@
                 <div class="col-12">
                     <div class="card mb-4 box-shadow">
                         <div class="card-body">
-                            <h6 class="card-subtitle mb-2 text-body-secondary">Сообщение</h6>
+                            <h6 class="card-subtitle mb-2 text-body-secondary">Message</h6>
                             {{ mailing.message.message }}
                         </div>
                     </div>
@@ -53,7 +58,7 @@
         <div class="col-4 d-flex">
             <div class="card mb-4 box-shadow w-100">
                 <div class="card-header">
-                    Получатели
+                    Recipients
                 </div>
                 <ul class="list-group list-group-flush">
                     {% for recipient in mailing.recipients.all %}
@@ -66,12 +71,12 @@
         <div class="col-4 d-flex">
             <div class="card mb-4 box-shadow w-100">
                 <div class="card-body">
-                    <h5 class="card-title">Параметры рассылки</h5>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Дата и время первой отправки</h6>
+                    <h5 class="card-title">Mailing parameters</h5>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Date and time of first attemption</h6>
                     <p class="card-text">{{ mailing.first_send_at }}</p>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Дата и время окончания отправки</h6>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Date and time of finishing</h6>
                     <p class="card-text">{{ mailing.finish_send_at }}</p>
-                    <h6 class="card-subtitle mb-2 text-body-secondary">Статус</h6>
+                    <h6 class="card-subtitle mb-2 text-body-secondary">Status</h6>
                     <p class="card-text">{{ mailing.status }}</p>
 
                 </div>

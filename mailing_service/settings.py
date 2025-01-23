@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+
 load_dotenv(override=True)
 
 from django.conf.global_settings import (
@@ -22,10 +23,8 @@ from django.conf.global_settings import (
     SERVER_EMAIL,
 )
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -37,7 +36,6 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True if os.getenv('DEBUG') == 'True' else False
 
 ALLOWED_HOSTS = ['*']
-
 
 # Application definition
 
@@ -51,7 +49,13 @@ INSTALLED_APPS = [
 
     'mailing',
     'users',
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'
+
+CRISPY_TEMPLATE_PACK = 'bootstrap5'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -83,21 +87,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'mailing_service.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': os.getenv('DATABASE_NAME'),
+        'NAME': os.getenv('DATABASE_NAME'),
         'USER': os.getenv('DATABASE_USER'),
         'PASSWORD': os.getenv('DATABASE_PASSWORD'),
         'HOST': os.getenv('DATABASE_HOST'),
         'PORT': os.getenv('DATABASE_PORT', default='5432'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
@@ -117,7 +119,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
@@ -129,9 +130,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.mail.ru"
 EMAIL_PORT = 465
@@ -142,7 +140,6 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 
-
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static', ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root/')
@@ -152,8 +149,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 AUTH_USER_MODEL = 'users.User'
 
-LOGIN_REDIRECT_URL = 'catalog:product_list'
-LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'mailing:main_page'
+LOGOUT_REDIRECT_URL = 'mailing:main_page'
 LOGIN_URL = 'users:login'
 
 CACHE_ENABLED = True
@@ -164,9 +161,5 @@ if CACHE_ENABLED:
             'LOCATION': os.getenv('LOCATION'),
         }
     }
-
-
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

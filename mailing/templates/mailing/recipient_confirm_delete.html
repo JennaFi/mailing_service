@@ -1,10 +1,8 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Получатели рассылки{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-<h2>Вы действительно хотите удалить получателя рассылки?</h2>
+<h2>Are you sure to delete recipient {{ recipient.name }}?</h2>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="table-responsive small">
@@ -12,24 +10,22 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Почта</th>
-                <th scope="col">ФИО</th>
-                <th scope="col">Комментарий</th>
+                <th scope="col">Email</th>
+                <th scope="col">Name</th>
+                <th scope="col">Comment</th>
             </tr>
             </thead>
             <tbody>
-
             <tr>
                 <td>{{ recipient.id }}</td>
                 <td>{{ recipient.email }}</td>
                 <td>{{ recipient.name }}</td>
                 <td>{{ recipient.comment }}</td>
                 <td class="text-end">
-                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Подтвердить</button>
-                    <a class="btn btn-outline-primary" href="{% url 'mailing:recipient_list' %}">Отменить</a>
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Confirm</button>
+                    <a class="btn btn-outline-primary" href="{% url 'mailing:recipient_list' %}">Cancel</a>
                 </td>
             </tr>
-
             </tbody>
         </table>
     </div>

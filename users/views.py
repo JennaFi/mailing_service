@@ -1,7 +1,8 @@
 import secrets
 
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import PasswordResetView, PasswordResetCompleteView
+from django.contrib.auth.models import Group
+from django.contrib.auth.views import PasswordResetView, PasswordResetCompleteView, LoginView
 from django.core.checks import messages
 from django.core.mail import send_mail
 from django.http import HttpResponseForbidden
@@ -11,20 +12,28 @@ from django.views import View
 from django.views.generic import CreateView, ListView, UpdateView
 
 from mailing_service.settings import DEFAULT_FROM_EMAIL
-from users.forms import UserRegisterForm, UserUpdateForm
+from users.forms import UserRegisterForm, UserUpdateForm, UserAuthenticationForm
 from users.models import User
 
 
 class UserListView(LoginRequiredMixin, ListView):
     model = User
+    context_object_name = 'users'
+    template_name = 'users_list.html'
 
-    def dispatch(self, request, *args, **kwargs):
+    def get_queryset(self):
         user = self.request.user
-        if user.groups.filter(name='Manager').exists():
-            return super().dispatch(request, *args, **kwargs)
-        return HttpResponseForbidden(
-            "You don't have permission to view or change or delete this user"
-        )
+        if user.has_perm('users.can_block_user'):
+            return User.objects.all()
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+
+        is_manager = user.groups.filter(name='Manager')
+
+        context['is_manager'] = is_manager
+        return context
 
 
 class UserRegisterView(CreateView):
@@ -52,14 +61,20 @@ class UserRegisterView(CreateView):
 def email_verification(request, token):
     user = get_object_or_404(User, token=token)
     user.is_active = True
+    user.groups.add(Group.objects.get(name='Users'))
     user.save()
-    return redirect(reverse('user:login'))
+    return redirect(reverse('users:login'))
+
+
+class UserLoginView(LoginView):
+    model = User
+    form_class = UserAuthenticationForm
 
 
 class UserUpdateProfile(UpdateView):
     model = User
     form_class = UserUpdateForm
-    template_name = 'registration/profile_update.html'
+    template_name = 'registration/edit_profile.html'
     context_object_name = 'form'
 
     def get_object(self):
@@ -76,13 +91,13 @@ class UserUpdateProfile(UpdateView):
 
 
 class UserBlockView(LoginRequiredMixin, View):
+
     def post(self, request, pk):
         user = get_object_or_404(User, pk=pk)
 
         if not request.user.has_perm('users.can_block_user'):
             return HttpResponseForbidden('You do not have permission to block this user')
 
-        user.is_active = not user.is_active
+        user.is_blocked = not user.is_blocked
         user.save()
-
-        return redirect('users:users')
+        return redirect('users:users_list')

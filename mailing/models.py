@@ -9,9 +9,9 @@ class Recipient(models.Model):
     email = models.EmailField(unique=True, verbose_name='Recipient email')
     name = models.CharField(max_length=255, verbose_name='Recipient name')
     comment = models.TextField(max_length=255, verbose_name='Comment', blank=True, null=True)
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='recipients_owner',
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='recipients',
                               verbose_name='Owner',
-    )
+                              )
 
     def __str__(self):
         return f'{self.name} <{self.email}>'
@@ -25,7 +25,7 @@ class Recipient(models.Model):
 class Message(models.Model):
     title = models.CharField(max_length=100, verbose_name='Title')
     message = models.TextField(verbose_name='Text message')
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='messages_owner',
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='messages',
                               verbose_name='Owner',
                               )
 
@@ -49,22 +49,16 @@ class Mailing(models.Model):
         (RUNNING, 'Running'),
     ]
 
-    first_send_at = models.DateTimeField(default=datetime.now(), verbose_name='Date and time to send',
-                                         )
-
+    first_send_at = models.DateTimeField(default=datetime.now(), verbose_name='Date and time to start', )
     finish_send_at = models.DateTimeField(default=datetime.now(), verbose_name='Date and time to finish')
-
     status = models.CharField(max_length=9, choices=STATUS_CHOICES, default=CREATED, verbose_name='Status')
-
     message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True, blank=True, related_name='Mailing',
-                                verbose_name='Message',
-                                )
+                                verbose_name='Message')
 
-    recipients = models.ManyToManyField(Recipient, related_name='Mailing', verbose_name='Recipients',
-    )
-    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='mailing_owner',
-                              verbose_name='Owner',
-                              )
+    recipients = models.ManyToManyField(Recipient, related_name='Mailing', verbose_name='Recipients')
+    owner = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='mailings',
+                              verbose_name='Owner', )
+    is_disabled = models.BooleanField(default=False, verbose_name='disabled')
 
     def __str__(self):
         amount = self.recipients.count()
@@ -74,6 +68,9 @@ class Mailing(models.Model):
         verbose_name = 'Mailing'
         verbose_name_plural = 'Mailings'
         ordering = ['-id']
+        permissions = [
+            ('can_disable_mailing', 'Can_disable_mailing'),
+        ]
 
 
 class MailingAttempts(models.Model):
@@ -86,7 +83,7 @@ class MailingAttempts(models.Model):
     ]
 
     attempted_at = models.DateTimeField(verbose_name='Date and time of attempt', )
-    status = models.CharField(max_length=8, choices=STATUS_CHOICES, verbose_name='Status')
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES, default='SUCCESS', verbose_name='Status')
 
     mail_server_response = models.TextField(
         null=True,

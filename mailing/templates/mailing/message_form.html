@@ -1,25 +1,23 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Рассылаемые сообщения{% endblock %}
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 
 {% block content %}
 
 {% if message %}
-<h2>Изменить сообщение</h2>
+<h2>Change</h2>
 {% else %}
-<h2>Добавить сообщение</h2>
+<h2>Add</h2>
 {% endif %}
-
 
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    {{ form|crispy }}
 
     {% if message %}
-    <button type="submit" class="btn btn-outline-primary">Изменить</button>
+    <button type="submit" class="btn btn-outline-primary">Change</button>
     {% else %}
-    <button type="submit" class="btn btn-outline-primary">Добавить</button>
+    <button type="submit" class="btn btn-outline-primary">Create</button>
     {% endif %}
 
 </form>

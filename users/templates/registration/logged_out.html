@@ -1,7 +1,7 @@
-<!-- registration/logged_out.html -->
-{% extends "mailing/base.html" %}
+
+{% extends 'base.html' %}
 
 {% block content %}
-  <h2>Вы вышли из системы</h2>
-  <a href="{% url 'login' %}">Войти снова</a>
+  <h2>You currently Logged Out</h2>
+  <a href="{% url 'login' %}">Log In</a>
 {% endblock %}

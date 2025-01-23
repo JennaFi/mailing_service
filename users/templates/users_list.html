@@ -1,13 +1,11 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Users list{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-    <h2>Пользователи</h2>
+    <h2>Users</h2>
     <div class="btn-toolbar mb-2 mb-md-0">
-        <a class="btn btn-outline-primary" href="{% url 'mailing:recipient_create' %}">Добавить</a>
+        <a class="btn btn-outline-primary" href="{% url 'mailing:recipient_create' %}">Add user</a>
     </div>
 </div>
 
@@ -17,27 +15,37 @@
         <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Почта</th>
-            <th scope="col">Статус активный/неактивный</th>
+            <th scope="col">Email</th>
+            <th scope="col">Is blocked</th>
+
         </tr>
         </thead>
         <tbody>
-        {% for user in users_list %}
+        {% for user in users %}
         <tr>
             <td>{{ user.id }}</td>
             <td>{{user.email }}</td>
-            <td>{{ user.is_active }}</td>
-            <td class="text-end" style="width: 20vh;">
-                <form action="{% url 'users:user_block' system_user.pk %}" method="post">
+
+            <td class="{% if user.is_blocked %}text-danger{% else %}text-primary{% endif %}">
+                {{ user.is_blocked|yesno:'Yes, No' }}
+            </td>
+            <td>
+
+                {% if perms.users.can_block_user %}
+                <form action="{% url 'users:user_block' user.pk %}" method="post">
                     {% csrf_token %}
-                    {% if user.is_active %}
-                    <button type="submit" class="btn btn-outline-danger btn-sm">Заблокировать</button>
+                    {% if user.is_blocked %}
+                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                        UnBlock
+                    </button>
                     {% else %}
-                    <button type="submit" class="btn btn-outline-primary btn-sm">Разблокировать</button>
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        Block
+                    </button>
                     {% endif %}
                 </form>
             </td>
-
+            {% endif %}
         </tr>
         {% endfor %}
         </tbody>

@@ -1,11 +1,8 @@
-
-{% extends 'mailing/base.html' %}
-
-{% block title %}Управление рассылками{% endblock %}
+{% extends 'base.html' %}
 
 {% block content %}
 
-<h2>Вы действительно хотите удалить рассылку?</h2>
+<h2>Are you sure to delete mailing {{ mailing.id }}?</h2>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="table-responsive small">
@@ -13,11 +10,10 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Дата и время первой отправки</th>
-                <th scope="col">Дата и время окончания отправки</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Сообщение</th>
-                <th scope="col">Получатели</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Message</th>
+                <th scope="col">Recipients</th>
             </tr>
             </thead>
             <tbody>
@@ -25,13 +21,16 @@
             <tr>
                 <td>{{ mailing.id }}</td>
                 <td>{{ mailing.first_send_at }}</td>
-                <td>{{ mailing.finish_send_at }}</td>
                 <td>{{ mailing.status }}</td>
                 <td>{{ mailing.message }}</td>
-                <td>{{ mailing.recipients }}</td>
+                <td>
+                    {% for recipient in mailing.recipients.all %}
+                    {{ recipient.email }}<br>
+                {% endfor %}
+                </td>
                 <td class="text-end">
-                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Подтвердить</button>
-                    <a class="btn btn-outline-primary" href="{% url 'mailing:mailing_list' %}">Отменить</a>
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Delete</button>
+                    <a class="btn btn-outline-primary" href="{% url 'mailing:mailing_list' %}">Cancel</a>
                 </td>
             </tr>
 

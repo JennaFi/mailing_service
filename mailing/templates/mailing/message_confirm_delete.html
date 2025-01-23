@@ -1,10 +1,8 @@
-{% extends 'mailing/base.html' %}
-
-{% block title %}Рассылаемые сообщения{% endblock %}
-
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
 {% block content %}
 
-<h2>Вы действительно хотите удалить это сообщение?</h2>
+<h2>Are you sure to delete?? {{ message.title }}</h2>
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="table-responsive small">
@@ -12,8 +10,8 @@
             <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Тема письма</th>
-                <th scope="col">Тело письма</th>
+                <th scope="col">Theme</th>
+                <th scope="col">Message</th>
             </tr>
             </thead>
             <tbody>
@@ -21,10 +19,10 @@
             <tr>
                 <td>{{ message.id }}</td>
                 <td>{{ message.title }}</td>
-                <td>{{ message.text }}</td>
+                <td>{{ message.message }}</td>
                 <td class="text-end">
-                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Подтвердить</button>
-                    <a class="btn btn-outline-primary" href="{% url 'mailing:message_list' %}">Отменить</a>
+                    <button type="submit" class="btn btn-lg btn-block btn-outline-danger">Confirm</button>
+                    <a class="btn btn-outline-primary" href="{% url 'mailing:message_list' %}">Cancel</a>
                 </td>
             </tr>
 

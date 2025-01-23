@@ -1,5 +1,5 @@
-{% extends 'mailing/base.html' %}
-
+{% extends 'base.html' %}
+{% load static %}
 {% block content %}
 
 <div class="container-fluid text-center">
@@ -7,37 +7,41 @@
 
         <div class="col-3 d-flex">
             <div class="card flex-fill">
-                <h5 class="card-header">Всего рассылок</h5>
-                <div class="card-body">
-                    <h1 class="card-title">{{ mailing_count }}</h1>
-                </div>
-            </div>
-        </div>
+                <h5 class="card-header">Mailings</h5>
 
-
-        <div class="col-3 d-flex">
-            <div class="card flex-fill">
-                <h5 class="card-header">Всего активных рассылок</h5>
                 <div class="card-body">
-                    <h1 class="card-title">{{ mailing_running_count }}</h1>
+                    <img class="opacity-50" width="75px" src="{% static 'img/envelope-paper.svg' %}">
+                    <h1 class="card-title">{{ mailings_count }}</h1>
                 </div>
             </div>
         </div>
 
         <div class="col-3 d-flex">
             <div class="card flex-fill">
-                <h5 class="card-header">Всего попыток отправки</h5>
+                <h5 class="card-header">Active mailings</h5>
                 <div class="card-body">
-                    <h1 class="card-title">{{ attempt_count }}</h1>
+                    <img class="opacity-50" width="75px" src="{% static 'img/envelope-arrow-up.svg' %}">
+                    <h1 class="card-title">{{ mailings_running_count }}</h1>
                 </div>
             </div>
         </div>
 
         <div class="col-3 d-flex">
             <div class="card flex-fill">
-                <h5 class="card-header">Количество получателей</h5>
+                <h5 class="card-header">Mailing Attempts</h5>
                 <div class="card-body">
-                    <h1 class="card-title">{{ recipient_count }}</h1>
+                    <img class="opacity-50" width="75px" src="{% static 'img/envelope-check.svg' %}">
+                    <h1 class="card-title">{{ attempts_count }}</h1>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-3 d-flex">
+            <div class="card flex-fill">
+                <h5 class="card-header">Recipients</h5>
+                <div class="card-body">
+                    <img class="opacity-50" width="75px" src="{% static 'img/people.svg' %}">
+                    <h1 class="card-title">{{ recipients_count }}</h1>
                 </div>
             </div>
         </div>
@@ -45,12 +49,11 @@
     </div>
 </div>
 
-{% include 'mailing/includes/dashboard.html' %}
 
 {% endblock %}
 
 {% block content_2 %}
 
-{% include 'mailing/list.html' %}
+{% include 'mailing/mailing_list.html' %}
 
 {% endblock %}
